@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: remote-motor-monitoring
+  datasource:
+    url: jdbc:mysql://localhost:3306/motor_monitoring
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 'Tafadzwa@25'
+  jpa:
+    hibernate:
+      ddl-auto: update
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:9001/realms/RemoteMonitoring
+          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+
+server:
+  port: 8025
+
+twilio:
+  account:
+    sid: AC94320c45bf13e552b0e000d55e6e17f9
+    authToken: a493bc3cabd16373570a55a3bbd5e9f2
+    number: +19172424016
+    test: +263778873016
+
+keycloak:
+  client-id: backend
+  client-secret: DZ2HxrPp8yxbKk84Epio7eJmo5cvdo9r
+  grant_type: password
+  token-uri: http://localhost:9001/realms/RemoteMonitoring/protocol/openid-connect/token
+
+jwt:
+  auth:
+    converter:
+      resource-id: backend
+      principle-attribute: preferred_username
