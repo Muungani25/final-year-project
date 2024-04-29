@@ -11,4 +11,6 @@ import java.util.List;
 public interface SensorDataService {
     ResponseEntity<String> addSensorData(SensorDataDto sensorData) ;
     List<SensorDataResponse> getLatestSensorData();
+
+
 }

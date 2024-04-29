@@ -37,6 +37,7 @@ public class MotorController {
         log.info("receiving data.....");
         return sensorDataService.addSensorData(sensorData);
     }
+
     @Operation(summary = "get list of all motors")
     @GetMapping("/all-motors")
     public List<Motor> getAllMotors() {
@@ -58,5 +59,6 @@ public class MotorController {
                 .contentType(MediaType.valueOf("image/png"))
                 .body(image);
     }
+
 
 }

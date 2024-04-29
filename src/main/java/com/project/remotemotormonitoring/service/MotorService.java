@@ -1,6 +1,7 @@
 package com.project.remotemotormonitoring.service;
 
 import com.project.remotemotormonitoring.api.dto.MotorDto;
+import com.project.remotemotormonitoring.api.dto.Response;
 import com.project.remotemotormonitoring.api.dto.ThresholdRequest;
 import com.project.remotemotormonitoring.domain.Motor;
 import com.project.remotemotormonitoring.domain.Thresholds;
@@ -14,8 +15,10 @@ public interface MotorService {
     List<Motor> getAllMotors();
     byte[] getImage() throws IOException;
 
-    ResponseEntity<String> setThresholdValues(ThresholdRequest request);
+    ResponseEntity<Response> setThresholdValues(ThresholdRequest request);
     List<Thresholds> getSetThresholdValues();
 
-    ResponseEntity<String> updateThresholdValues(ThresholdRequest request);
+    ResponseEntity<Response> updateThresholdValues(ThresholdRequest request);
+
+    ResponseEntity<Response> deleteThreshold();
 }

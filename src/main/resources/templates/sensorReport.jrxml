@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.15.0.final using JasperReports Library version 6.15.0-dd49bfb94918336b8321d5507193f0169ead4e95  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Electric _Motor_Data_A4" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e8517bfc-edf9-4b84-8ad1-0914e63fde9b">
+    <property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+    <property name="com.jaspersoft.studio.data.defaultdataadapter" value="Motor_Monitoring"/>
+    <import value="java.text.SimpleDateFormat"/>
+    <parameter name="from_date" class="java.sql.Date"/>
+    <parameter name="to_date" class="java.sql.Date"/>
+    <parameter name="motor_name" class="java.lang.String"/>
+    <queryString language="SQL">
+        <![CDATA[SELECT sd.*, m.motor_name
+FROM sensor_data sd
+INNER JOIN motor m ON sd.motor_id = m.id
+WHERE m.motor_name = $P{motor_name}
+AND sd.date >= $P{from_date}
+AND sd.date <= $P{to_date}]]>
+    </queryString>
+    <field name="id" class="java.lang.Long">
+        <property name="com.jaspersoft.studio.field.name" value="id"/>
+        <property name="com.jaspersoft.studio.field.label" value="id"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="sensor_data"/>
+        <fieldDescription><![CDATA[]]></fieldDescription>
+    </field>
+    <field name="current_value" class="java.lang.String">
+        <property name="com.jaspersoft.studio.field.name" value="current_value"/>
+        <property name="com.jaspersoft.studio.field.label" value="current_value"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="sensor_data"/>
+        <fieldDescription><![CDATA[]]></fieldDescription>
+    </field>
+    <field name="date" class="java.sql.Date">
+        <property name="com.jaspersoft.studio.field.name" value="date"/>
+        <property name="com.jaspersoft.studio.field.label" value="date"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="sensor_data"/>
+        <fieldDescription><![CDATA[]]></fieldDescription>
+    </field>
+    <field name="status" class="java.lang.String">
+        <property name="com.jaspersoft.studio.field.name" value="status"/>
+        <property name="com.jaspersoft.studio.field.label" value="status"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="sensor_data"/>
+        <fieldDescription><![CDATA[]]></fieldDescription>
+    </field>
+    <field name="temperature_value" class="java.lang.String">
+        <property name="com.jaspersoft.studio.field.name" value="temperature_value"/>
+        <property name="com.jaspersoft.studio.field.label" value="temperature_value"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="sensor_data"/>
+        <fieldDescription><![CDATA[]]></fieldDescription>
+    </field>
+    <field name="time_stamp" class="java.sql.Time">
+        <property name="com.jaspersoft.studio.field.name" value="time_stamp"/>
+        <property name="com.jaspersoft.studio.field.label" value="time_stamp"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="sensor_data"/>
+        <fieldDescription><![CDATA[]]></fieldDescription>
+    </field>
+    <field name="vibration_value" class="java.lang.String">
+        <property name="com.jaspersoft.studio.field.name" value="vibration_value"/>
+        <property name="com.jaspersoft.studio.field.label" value="vibration_value"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="sensor_data"/>
+        <fieldDescription><![CDATA[]]></fieldDescription>
+    </field>
+    <field name="motor_id" class="java.lang.Long">
+        <property name="com.jaspersoft.studio.field.name" value="motor_id"/>
+        <property name="com.jaspersoft.studio.field.label" value="motor_id"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="sensor_data"/>
+        <fieldDescription><![CDATA[]]></fieldDescription>
+    </field>
+    <field name="motor_name" class="java.lang.String">
+        <property name="com.jaspersoft.studio.field.name" value="motor_name"/>
+        <property name="com.jaspersoft.studio.field.label" value="motor_name"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="motor"/>
+        <fieldDescription><![CDATA[]]></fieldDescription>
+    </field>
+    <background>
+        <band splitType="Stretch"/>
+    </background>
+    <title>
+        <band height="208" splitType="Stretch">
+            <image>
+                <reportElement x="0" y="0" width="220" height="80" uuid="d741c342-6c36-4b91-afe4-6288e631cd99"/>
+                <imageExpression><![CDATA["C:\\Users\\Administrator\\Pictures\\project\\logo.png"]]></imageExpression>
+            </image>
+            <staticText>
+                <reportElement x="240" y="0" width="100" height="20" uuid="19b9e64b-a5a8-43e4-9b13-d9808d3f42c3"/>
+                <textElement>
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[RUN BY]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="390" y="0" width="120" height="20" uuid="befceeb1-9d79-478c-af67-7b912dc8b958"/>
+                <textFieldExpression><![CDATA["MUUNGANI T"]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="240" y="140" width="100" height="30" uuid="2af0df98-a4e5-4ad3-883b-b4999633e054"/>
+                <textElement>
+                    <font size="10" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA["MACHINE NAME"]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="240" y="40" width="100" height="30" uuid="d73ff0a9-745f-4c88-ba1b-1b0deb3a45ac"/>
+                <textElement>
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[FROM]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="390" y="140" width="120" height="30" uuid="363d7625-9587-4a35-9eb9-bfd8e8515d3e"/>
+                <textFieldExpression><![CDATA[$P{motor_name}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="390" y="40" width="113" height="30" uuid="f25edf74-dee6-42b4-b1ee-81c5f8d5f20f"/>
+                <textFieldExpression><![CDATA[new SimpleDateFormat("yyyy-MM-dd").format($P{from_date})]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="240" y="90" width="100" height="30" uuid="abeb5991-abdb-408d-981c-c1c9fd37eada"/>
+                <textElement>
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[TO]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="390" y="90" width="120" height="30" uuid="3b3ac2f5-cf37-4683-b8f5-f03f9ad5d09c"/>
+                <textFieldExpression><![CDATA[new SimpleDateFormat("yyyy-MM-dd").format($P{to_date})]]></textFieldExpression>
+            </textField>
+        </band>
+    </title>
+    <columnHeader>
+        <band height="40" splitType="Stretch">
+            <staticText>
+                <reportElement x="0" y="0" width="95" height="30" uuid="a3918361-d26f-4bac-9704-71238996ad27">
+                    <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fdc3fd12-fa04-4c51-9024-553e47a35539"/>
+                </reportElement>
+                <textElement>
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[Current]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="95" y="0" width="92" height="30" uuid="34cf4dc1-bd52-4083-a5f5-7f403c412fef">
+                    <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ce1edc17-d88c-4f41-958d-6869eecfeab9"/>
+                </reportElement>
+                <textElement>
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[Temperature]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="187" y="0" width="92" height="30" uuid="d5738802-c895-48de-b156-4352034a18e7">
+                    <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0234c01e-1381-4186-8458-fe355b1a4c46"/>
+                </reportElement>
+                <textElement>
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[Vibrations]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="279" y="0" width="92" height="30" uuid="9916b791-4744-4e28-ba06-d13f169712e4">
+                    <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="32f1ae73-1919-4e7a-bc3c-b2ecae1304b1"/>
+                </reportElement>
+                <textElement>
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[Status]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="371" y="0" width="92" height="30" uuid="2c0b6ab3-99cd-4477-9526-27c1c309a4c4">
+                    <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e7a85fa3-dcf3-447e-8d32-b53d5e3cc5dd"/>
+                </reportElement>
+                <textElement>
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[Date]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="463" y="0" width="92" height="30" uuid="a44a08fb-5462-4bc5-ac78-31d7b2b853b4">
+                    <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6fe04846-f232-4c3f-bd86-29ec329405b3"/>
+                </reportElement>
+                <textElement>
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[Time]]></text>
+            </staticText>
+            <line>
+                <reportElement x="0" y="-20" width="555" height="1" uuid="461387c1-0966-4f12-a86c-2d3c5ee7a971"/>
+            </line>
+        </band>
+    </columnHeader>
+    <detail>
+        <band height="67">
+            <textField>
+                <reportElement x="0" y="0" width="95" height="30" uuid="7a2949e3-16f9-4d3c-a77e-83893f4d2b93">
+                    <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fdc3fd12-fa04-4c51-9024-553e47a35539"/>
+                </reportElement>
+                <textFieldExpression><![CDATA[$F{current_value}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="95" y="0" width="92" height="30" uuid="ccd55dbd-ca3a-4019-a2a3-15498eba9819">
+                    <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ce1edc17-d88c-4f41-958d-6869eecfeab9"/>
+                </reportElement>
+                <textFieldExpression><![CDATA[$F{temperature_value}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="187" y="0" width="92" height="30" uuid="a831dd73-9eae-4810-9dce-a9251c94c17a">
+                    <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0234c01e-1381-4186-8458-fe355b1a4c46"/>
+                </reportElement>
+                <textFieldExpression><![CDATA[$F{vibration_value}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="279" y="0" width="92" height="30" uuid="cd37ab9b-21c9-43b0-9c61-cb1a8355e173">
+                    <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="32f1ae73-1919-4e7a-bc3c-b2ecae1304b1"/>
+                </reportElement>
+                <textFieldExpression><![CDATA[$F{status}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="371" y="0" width="92" height="30" uuid="7c4dbd6f-350f-403a-97c7-686df9925ef8">
+                    <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e7a85fa3-dcf3-447e-8d32-b53d5e3cc5dd"/>
+                </reportElement>
+                <textFieldExpression><![CDATA[new SimpleDateFormat("dd-MM-yyyy").format($F{date})]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="463" y="0" width="92" height="30" uuid="3317322a-eeeb-47fa-bcf5-23fce983ca72">
+                    <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6fe04846-f232-4c3f-bd86-29ec329405b3"/>
+                </reportElement>
+                <textFieldExpression><![CDATA[new SimpleDateFormat("HH:mm:ss").format($F{time_stamp})]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+    <columnFooter>
+        <band height="146" splitType="Stretch"/>
+    </columnFooter>
+    <pageFooter>
+        <band height="122" splitType="Stretch"/>
+    </pageFooter>
+    <noData>
+        <band height="158"/>
+    </noData>
+</jasperReport>

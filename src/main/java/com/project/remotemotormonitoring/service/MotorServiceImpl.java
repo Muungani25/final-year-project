@@ -1,14 +1,17 @@
 package com.project.remotemotormonitoring.service;
 
 import com.project.remotemotormonitoring.api.dto.MotorDto;
+import com.project.remotemotormonitoring.api.dto.Response;
 import com.project.remotemotormonitoring.api.dto.ThresholdRequest;
 import com.project.remotemotormonitoring.domain.Motor;
 import com.project.remotemotormonitoring.domain.Thresholds;
 import com.project.remotemotormonitoring.persistence.MotorRepository;
 import com.project.remotemotormonitoring.persistence.ThresholdsRepository;
 import com.project.remotemotormonitoring.service.Util.Image;
+import com.project.remotemotormonitoring.service.exceptions.ResourceAlreadyExists;
 import com.project.remotemotormonitoring.service.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -17,21 +20,21 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class MotorServiceImpl implements MotorService{
+public class MotorServiceImpl implements MotorService {
     private final MotorRepository motorRepository;
     private final ThresholdsRepository thresholdsRepository;
+
     @Override
     public ResponseEntity<String> addMotor(MotorDto motorDto) {
-        if(motorRepository.findByMotorName(motorDto.getMotorName()).isEmpty()){
+        if (motorRepository.findByMotorName(motorDto.getMotorName()).isEmpty()) {
 
             motorRepository.save(Motor.builder()
                     .motorName(motorDto.getMotorName())
                     .image("")
                     .build());
             return ResponseEntity.ok("motor added successfully");
-        }
-else {
-    return ResponseEntity.ok("motor already exists");
+        } else {
+            return ResponseEntity.ok("motor already exists");
         }
     }
 
@@ -47,30 +50,63 @@ else {
     }
 
     @Override
-    public ResponseEntity<String> setThresholdValues(ThresholdRequest request) {
-        if(thresholdsRepository.findAll().isEmpty()){
+    public ResponseEntity<Response> setThresholdValues(ThresholdRequest request) {
+        if (thresholdsRepository.findAll().isEmpty()) {
             thresholdsRepository.save(Thresholds.builder()
-                            .vibrations(request.getVibrations()+" G")
-                            .current(request.getCurrent()+" A")
-                            .temperature(request.getTemperature()+" °C")
+                    .vibrations(request.getVibrations() )
+                    .current(request.getCurrent() )
+                    .temperature(request.getTemperature() )
                     .build());
-            return ResponseEntity.ok("Threshold values set successfully");
-        }else {
-            return ResponseEntity.ok("Threshold values already set please update");
+            return ResponseEntity.ok(Response.builder()
+                            .message("Threshold values set successfully")
+                    .build());
+        } else {
+            ;throw new ResourceAlreadyExists("Threshold values already set please update");
         }
 
     }
 
     @Override
     public List<Thresholds> getSetThresholdValues() {
-        if(thresholdsRepository.findAll().isEmpty()) throw new ResourceNotFoundException("no threshold values set");
+        if (thresholdsRepository.findAll().isEmpty()) throw new ResourceNotFoundException("no threshold values set");
         return thresholdsRepository.findAll();
     }
 
     @Override
-    public ResponseEntity<String> updateThresholdValues(ThresholdRequest request) {
-        var current= thresholdsRepository.findById(0L);
+    public ResponseEntity<Response> updateThresholdValues(ThresholdRequest request) {
+        var currentThreshold = getFirstThreshold();
 
-        return null;
+        assert currentThreshold != null;
+        currentThreshold.setCurrent(request.getCurrent());
+            currentThreshold.setTemperature(request.getTemperature());
+            currentThreshold.setVibrations(request.getVibrations());
+
+            thresholdsRepository.save(currentThreshold);
+
+            return ResponseEntity.ok(Response.builder()
+                    .message("Threshold values updated successfully")
+                    .build());
+        }
+
+
+
+    @Override
+    public ResponseEntity<Response> deleteThreshold() {
+        thresholdsRepository.deleteAll();
+        return ResponseEntity.ok(Response.builder()
+                .message("Threshold values deleted")
+                .build());
+    }
+
+    private Thresholds getFirstThreshold() {
+        Sort sort = Sort.by(Sort.Direction.ASC, "id");
+        List<Thresholds> allThresholds = thresholdsRepository.findAll(sort);
+
+        if (!allThresholds.isEmpty()) {
+
+            return allThresholds.get(0);
+        } else {
+            throw new ResourceNotFoundException("no threshold values found");
+        }
     }
 }

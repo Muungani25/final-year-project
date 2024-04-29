@@ -16,6 +16,18 @@ spring:
           issuer-uri: http://localhost:9001/realms/RemoteMonitoring
           jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: muunganitafadzwa25@gmail.com
+    password: 'yupyxufvwrmxlmxv'
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
 server:
   port: 8025
 
@@ -36,4 +48,9 @@ jwt:
   auth:
     converter:
       resource-id: backend
-      principle-attribute: preferred_username
+      principle-attribute: preferred_username,
+
+email:
+  from: muunganitafadzwa25@gmail.com
+  fromName: Remote Motor Monitoring
+  to: whitethatboy@gmail.com

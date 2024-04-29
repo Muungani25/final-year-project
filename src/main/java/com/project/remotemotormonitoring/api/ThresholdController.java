@@ -20,13 +20,23 @@ public class ThresholdController {
 private final MotorService motorService;
 
 @PostMapping("/set_values")
-    ResponseEntity<?> setThresholdValues(@RequestBody ThresholdRequest request){
+    public ResponseEntity<?> setThresholdValues(@RequestBody ThresholdRequest request){
         return motorService.setThresholdValues(request);
     }
 
     @GetMapping("/get_current_values")
-    List<?> getSetThresholds(){
+   public List<?> getSetThresholds(){
     return  motorService.getSetThresholdValues();
     }
 
+    @PutMapping("/update_thresholds")
+    public ResponseEntity<?> updateThresholdValues(@RequestBody ThresholdRequest request){
+    return motorService.updateThresholdValues(request);
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> deleteThreshold(){
+    return motorService.deleteThreshold();
+    }
 }
+

@@ -8,6 +8,7 @@ import com.project.remotemotormonitoring.persistence.MotorRepository;
 import com.project.remotemotormonitoring.persistence.SensorDataRepository;
 import com.project.remotemotormonitoring.service.Util.Image;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -20,18 +21,24 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class SensorDataServiceImpl implements SensorDataService{
     private final MotorRepository motorRepository;
     private final SensorDataRepository sensorDataRepository;
     @Override
     public ResponseEntity<String> addSensorData(SensorDataDto sensorData) {
+        String formattedDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+       var formattedTime= formatter.format(LocalTime.now());
+        var localTime=LocalTime.parse(formattedTime, formatter);
+        log.info("time...{}",localTime);
         var motor= motorRepository.findByMotorName(sensorData.motorName);
         motor.ifPresent(value -> sensorDataRepository.save(SensorData.builder()
                 .currentValue(sensorData.getCurrent()+" A")
                 .temperatureValue(sensorData.getTemperature()+" °C")
                 .vibrationValue(sensorData.getVibrations()+" G")
-                .timeStamp(LocalTime.parse(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"))))
-                .date(LocalDate.now())
+                .timeStamp(localTime)
+                .date(LocalDate.parse(formattedDate, DateTimeFormatter.ofPattern("dd-MM-yyyy")))
                 .status(Status.RUNNING.toString())
                 .motor(value)
                 .build()));
