@@ -30,7 +30,7 @@ public class MotorServiceImpl implements MotorService {
 
             motorRepository.save(Motor.builder()
                     .motorName(motorDto.getMotorName())
-                    .image("")
+
                     .build());
             return ResponseEntity.ok("motor added successfully");
         } else {
@@ -51,11 +51,19 @@ public class MotorServiceImpl implements MotorService {
 
     @Override
     public ResponseEntity<Response> setThresholdValues(ThresholdRequest request) {
-        if (thresholdsRepository.findAll().isEmpty()) {
+
+        var threshold= thresholdsRepository.findThresholdsByMotor_MotorName(request.getMotorName());
+        var motor= motorRepository.findByMotorName(request.getMotorName())
+                .orElseThrow(()-> new ResourceNotFoundException("motor does not exist"));
+
+
+        if (threshold.isEmpty()) {
+
             thresholdsRepository.save(Thresholds.builder()
                     .vibrations(request.getVibrations() )
                     .current(request.getCurrent() )
                     .temperature(request.getTemperature() )
+                            .motor(motor)
                     .build());
             return ResponseEntity.ok(Response.builder()
                             .message("Threshold values set successfully")
@@ -74,9 +82,9 @@ public class MotorServiceImpl implements MotorService {
 
     @Override
     public ResponseEntity<Response> updateThresholdValues(ThresholdRequest request) {
-        var currentThreshold = getFirstThreshold();
+        var currentThreshold = thresholdsRepository.findThresholdsByMotor_MotorName(request.getMotorName())
+                .orElseThrow(()-> new ResourceNotFoundException("motor does not exist"));
 
-        assert currentThreshold != null;
         currentThreshold.setCurrent(request.getCurrent());
             currentThreshold.setTemperature(request.getTemperature());
             currentThreshold.setVibrations(request.getVibrations());

@@ -1,9 +1,6 @@
 package com.project.remotemotormonitoring.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
@@ -19,4 +16,6 @@ public class Thresholds {
     private String current;
     private String temperature;
     private String vibrations;
+    @OneToOne
+    private Motor motor;
 }

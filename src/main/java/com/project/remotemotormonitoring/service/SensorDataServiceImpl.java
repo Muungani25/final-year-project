@@ -7,6 +7,7 @@ import com.project.remotemotormonitoring.domain.Status;
 import com.project.remotemotormonitoring.persistence.MotorRepository;
 import com.project.remotemotormonitoring.persistence.SensorDataRepository;
 import com.project.remotemotormonitoring.service.Util.Image;
+import com.project.remotemotormonitoring.service.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -27,21 +28,29 @@ public class SensorDataServiceImpl implements SensorDataService{
     private final SensorDataRepository sensorDataRepository;
     @Override
     public ResponseEntity<String> addSensorData(SensorDataDto sensorData) {
-        String formattedDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        String formattedDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
        var formattedTime= formatter.format(LocalTime.now());
         var localTime=LocalTime.parse(formattedTime, formatter);
+
         log.info("time...{}",localTime);
-        var motor= motorRepository.findByMotorName(sensorData.motorName);
-        motor.ifPresent(value -> sensorDataRepository.save(SensorData.builder()
-                .currentValue(sensorData.getCurrent()+" A")
-                .temperatureValue(sensorData.getTemperature()+" °C")
-                .vibrationValue(sensorData.getVibrations()+" G")
+        long milliseconds = Long.parseLong(sensorData.getUpTime());
+        double vibValue=Double.parseDouble(sensorData.getVibrations());
+        String vibFormatted=String.format("%.3f",vibValue);
+        double minutes = milliseconds / 60000.0;
+        String formattedMinutes = String.format("%.2f", minutes);
+        var motor = motorRepository.findByMotorName(sensorData.getMotorName())
+                .orElseThrow(() -> new ResourceNotFoundException("Motor not found"));
+        sensorDataRepository.save(SensorData.builder()
+                .currentValue(formatValue(sensorData.getCurrent())+" A")
+                .temperatureValue(formatValue(sensorData.getTemperature())+" °C")
+                .vibrationValue(vibFormatted+" Hz")
                 .timeStamp(localTime)
-                .date(LocalDate.parse(formattedDate, DateTimeFormatter.ofPattern("dd-MM-yyyy")))
-                .status(Status.RUNNING.toString())
-                .motor(value)
-                .build()));
+                .date(LocalDate.parse(formattedDate, DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+                .status(sensorData.getStatus())
+                .motor(motor)
+                .upTime(formattedMinutes)
+                .build());
         return ResponseEntity.ok("data added");
     }
 
@@ -60,7 +69,7 @@ public class SensorDataServiceImpl implements SensorDataService{
     private SensorDataResponse buildResponse(SensorData sensorData) throws IOException {
         return SensorDataResponse.builder()
               //  .image(Image.readImage("C:\\Users\\USER\\Documents\\project\\images\\pump1.png"))
-                .currentValue(sensorData.getCurrentValue())
+                .currentValue((sensorData.getCurrentValue()))
                 .temperatureValue(sensorData.getTemperatureValue())
                 .date(sensorData.getDate())
                 .vibrationValue(sensorData.getVibrationValue())
@@ -68,5 +77,10 @@ public class SensorDataServiceImpl implements SensorDataService{
                 .status(sensorData.getStatus())
                 .timesStamp(sensorData.getTimeStamp())
                 .build();
+    }
+
+   private String formatValue(String value){
+        double number = Double.parseDouble(value);
+       return String.format("%.2f", number);
     }
 }

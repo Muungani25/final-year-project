@@ -34,7 +34,7 @@ public class MotorController {
     @Operation(summary = "add data from sensors")
     @PostMapping("/add_sensor_data")
     public ResponseEntity<?> addSensorData(@RequestBody SensorDataDto sensorData) {
-        log.info("receiving data.....");
+        log.info("receiving data.....{}",sensorData);
         return sensorDataService.addSensorData(sensorData);
     }
 

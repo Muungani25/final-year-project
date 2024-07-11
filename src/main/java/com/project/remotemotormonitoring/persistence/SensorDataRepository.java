@@ -8,6 +8,9 @@ import java.util.List;
 
 public interface SensorDataRepository extends JpaRepository<SensorData ,Long> {
     @Query("SELECT sd FROM SensorData sd " +
-            "WHERE sd.timeStamp = (SELECT MAX(sd2.timeStamp) FROM SensorData sd2 WHERE sd2.motor = sd.motor)")
+            "WHERE sd.id IN " +
+            "(SELECT MAX(sd2.id) FROM SensorData sd2 GROUP BY sd2.motor)")
     List<SensorData> findLatestSensorDataForEachMotor();
+
+
 }

@@ -18,6 +18,6 @@ public class Motor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String motorName;
-    private String image;
+
 
 }

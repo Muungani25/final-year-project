@@ -8,15 +8,15 @@ import org.springframework.web.client.RestTemplate;
 @RestController
 public class RelayController {
 
-    private final String esp32Url = "http://192.168.137.81"; // Replace with your ESP32's IP address
+    private final String esp32Url = "http://192.168.137.183"; // Replace with your ESP32's IP address
 
     @GetMapping("/relay")
     public String controlRelay(@RequestParam String action) {
-        if (action.equalsIgnoreCase("on")) {
-            sendHttpRequest(esp32Url + "/on");
+        if (action.equalsIgnoreCase("start")) {
+            sendHttpRequest(esp32Url + "/start");
             return "Relay turned ON";
-        } else if (action.equalsIgnoreCase("off")) {
-            sendHttpRequest(esp32Url + "/off");
+        } else if (action.equalsIgnoreCase("stop")) {
+            sendHttpRequest(esp32Url + "/stop");
             return "Relay turned OFF";
         } else {
             return "Invalid action";

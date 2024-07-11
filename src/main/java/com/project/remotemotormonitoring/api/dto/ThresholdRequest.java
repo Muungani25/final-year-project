@@ -13,4 +13,5 @@ public class ThresholdRequest {
     private String current;
     private String temperature;
     private String vibrations;
+    private String motorName;
 }

@@ -7,11 +7,19 @@
     <parameter name="motor_name" class="java.lang.String"/>
     <parameter name="month_date" class="java.sql.Date"/>
     <queryString language="SQL">
-        <![CDATA[SELECT sd.*
+        <![CDATA[SELECT
+    sd.*,
+    (
+        SELECT SUM(CAST(sd2.up_time AS DECIMAL(10, 2)))
+        FROM sensor_data sd2
+        INNER JOIN motor m2 ON sd2.motor_id = m2.id
+        WHERE m2.motor_name = $P{motor_name}
+        AND DATE_FORMAT(sd2.date, '%Y-%m') = DATE_FORMAT($P{month_date}, '%Y-%m')
+    ) AS total_uptime
 FROM sensor_data sd
 JOIN motor m ON sd.motor_id = m.id
 WHERE DATE_FORMAT(sd.date, '%Y-%m') = DATE_FORMAT($P{month_date}, '%Y-%m')
-AND m.motor_name = $P{motor_name}]]>
+AND m.motor_name = $P{motor_name};]]>
     </queryString>
     <field name="id" class="java.lang.Long">
         <property name="com.jaspersoft.studio.field.name" value="id"/>
@@ -61,6 +69,16 @@ AND m.motor_name = $P{motor_name}]]>
         <property name="com.jaspersoft.studio.field.tree.path" value="sensor_data"/>
         <fieldDescription><![CDATA[]]></fieldDescription>
     </field>
+    <field name="up_time" class="java.lang.String">
+        <property name="com.jaspersoft.studio.field.name" value="up_time"/>
+        <property name="com.jaspersoft.studio.field.label" value="up_time"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="sensor_data"/>
+        <fieldDescription><![CDATA[]]></fieldDescription>
+    </field>
+    <field name="total_uptime" class="java.math.BigDecimal">
+        <property name="com.jaspersoft.studio.field.name" value="total_uptime"/>
+        <property name="com.jaspersoft.studio.field.label" value="total_uptime"/>
+    </field>
     <background>
         <band splitType="Stretch"/>
     </background>
@@ -68,28 +86,17 @@ AND m.motor_name = $P{motor_name}]]>
         <band height="208" splitType="Stretch">
             <image>
                 <reportElement x="0" y="0" width="220" height="80" uuid="d741c342-6c36-4b91-afe4-6288e631cd99"/>
-                <imageExpression><![CDATA["C:\\Users\\Administrator\\Pictures\\project\\logo.png"]]></imageExpression>
+                <imageExpression><![CDATA["C:\\Users\\USER\\Downloads\\Compressed\\jpg2png\\logo.png"]]></imageExpression>
             </image>
-            <staticText>
-                <reportElement x="240" y="0" width="100" height="20" uuid="19b9e64b-a5a8-43e4-9b13-d9808d3f42c3"/>
-                <textElement>
-                    <font isBold="true"/>
-                </textElement>
-                <text><![CDATA[RUN BY]]></text>
-            </staticText>
             <textField>
-                <reportElement x="390" y="0" width="120" height="20" uuid="befceeb1-9d79-478c-af67-7b912dc8b958"/>
-                <textFieldExpression><![CDATA["MUUNGANI T"]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="240" y="100" width="100" height="40" uuid="2af0df98-a4e5-4ad3-883b-b4999633e054"/>
+                <reportElement x="240" y="10" width="100" height="30" uuid="2af0df98-a4e5-4ad3-883b-b4999633e054"/>
                 <textElement>
                     <font size="10" isBold="true"/>
                 </textElement>
                 <textFieldExpression><![CDATA["MACHINE NAME"]]></textFieldExpression>
             </textField>
             <textField>
-                <reportElement x="390" y="100" width="120" height="40" uuid="363d7625-9587-4a35-9eb9-bfd8e8515d3e"/>
+                <reportElement x="390" y="10" width="120" height="30" uuid="363d7625-9587-4a35-9eb9-bfd8e8515d3e"/>
                 <textFieldExpression><![CDATA[$P{motor_name}]]></textFieldExpression>
             </textField>
             <staticText>
@@ -102,6 +109,17 @@ AND m.motor_name = $P{motor_name}]]>
             <textField>
                 <reportElement x="390" y="50" width="120" height="30" uuid="3b3ac2f5-cf37-4683-b8f5-f03f9ad5d09c"/>
                 <textFieldExpression><![CDATA[new SimpleDateFormat("MM-yyyy").format($P{month_date})]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="240" y="90" width="100" height="30" uuid="0ab98c3e-aba3-4f84-93ca-1588ec7f225c"/>
+                <textElement>
+                    <font size="12" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Up Time(min)]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="390" y="90" width="120" height="30" uuid="1efe647d-1afe-4d8a-8b41-a716b76e2d39"/>
+                <textFieldExpression><![CDATA[$F{total_uptime}]]></textFieldExpression>
             </textField>
         </band>
     </title>

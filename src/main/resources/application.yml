@@ -13,7 +13,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:9001/realms/RemoteMonitoring
+          issuer-uri: http://localhost:8080/realms/RemoteMonitoring
           jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
 
   mail:
@@ -33,16 +33,16 @@ server:
 
 twilio:
   account:
-    sid: AC94320c45bf13e552b0e000d55e6e17f9
-    authToken: a493bc3cabd16373570a55a3bbd5e9f2
-    number: +19172424016
-    test: +263778873016
+    sid: ACd21eef2c501e57e306855cd7ca711890
+    authToken: 6433695c72e38ce5c4b6cc41ee577360
+    number: +19386666588
+    test: +263713384934
 
 keycloak:
   client-id: backend
-  client-secret: DZ2HxrPp8yxbKk84Epio7eJmo5cvdo9r
+  client-secret: 9fbvCQ54cJZsUMBRWFLfy0Sge7lR8VRv
   grant_type: password
-  token-uri: http://localhost:9001/realms/RemoteMonitoring/protocol/openid-connect/token
+  token-uri: http://localhost:8080/realms/RemoteMonitoring/protocol/openid-connect/token
 
 jwt:
   auth:
@@ -54,3 +54,11 @@ email:
   from: muunganitafadzwa25@gmail.com
   fromName: Remote Motor Monitoring
   to: whitethatboy@gmail.com
+
+clickatel:
+  http:
+    api:
+      key: "-iUqtrnATD6WD_ExVgXlVg==
+"
+    send:
+      url: 'https://platform.clickatell.com/messages/http/send?apiKey={apiKey}&to={to}&content={content}'

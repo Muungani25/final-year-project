@@ -9,14 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class SensorDataDto {
-    private String current;
-    private String temperature;
-    private String vibrations;
-    private String motorName;
-    private String status;
-    private String upTime;
-
-
-
+public class NotificationRequest {
+    private String variable;
+    private String value;
+    private String pump;
 }

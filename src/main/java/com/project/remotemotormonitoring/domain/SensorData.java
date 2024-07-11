@@ -20,6 +20,7 @@ public class SensorData {
     @ManyToOne
     private Motor motor;
     private String status;
+    private String upTime;
     @Column
     private String temperatureValue;
     @Column
